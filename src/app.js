@@ -15,6 +15,8 @@ import { addLogger } from "./middleware/loggerMiddleware.js";
 import { logger } from "./utils/logger.js";
 import loggerTest from "./routes/loggerTest.js";
 
+import { swaggerSpecs, swaggerUiMiddleware } from "./config/swagger.js";
+
 dotenv.config();
 
 const app = express();
@@ -27,6 +29,12 @@ const connection = mongoose
 app.use(express.json());
 app.use(cookieParser());
 app.use(addLogger);
+
+app.use(
+  "/api/docs",
+  swaggerUiMiddleware.serve,
+  swaggerUiMiddleware.setup(swaggerSpecs)
+);
 
 app.use("/api/users", usersRouter);
 app.use("/api/pets", petsRouter);

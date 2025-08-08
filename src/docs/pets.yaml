@@ -1,0 +1,9 @@
+paths:
+  /api/pets:
+    get:
+      summary:
+      tags:
+        - Pets
+      responses:
+        "200":
+          description: Lista de mascotas

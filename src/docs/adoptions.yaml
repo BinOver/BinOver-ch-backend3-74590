@@ -1,0 +1,9 @@
+paths:
+  /api/adoptions:
+    get:
+      summary: Listar adopciones
+      tags:
+        - Adoptions
+      responses:
+        "200":
+          description: Lista de adopciones

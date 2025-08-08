@@ -1,0 +1,24 @@
+paths:
+  /api/sessions/login:
+    post:
+      summary: Iniciar sesion
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@ejemplo.com.ar
+                password:
+                type: string
+                example: coder123
+      responses:
+      "200":
+        description: Sesion iniciada correctamente
+      "401":
+        description: Lista de mascotas
