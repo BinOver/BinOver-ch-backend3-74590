@@ -1,4 +1,43 @@
 paths:
+  /api/sessions/register:
+    post:
+      summary: Registro de usuario
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SessionInput"
+      responses:
+        "200":
+          description: Registro de usuario exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: string
+                    example: 64e2d3f8a5d6f20017b8d9d5
+        "400":
+          description: El usuario no pudo registrar un sesion
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: User already exists
+
   /api/sessions/login:
     post:
       summary: Iniciar sesion
@@ -9,16 +48,181 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  example: user@ejemplo.com.ar
-                password:
-                type: string
-                example: coder123
+              $ref: "#/components/schemas/SessionInput"
       responses:
-      "200":
-        description: Sesion iniciada correctamente
-      "401":
-        description: Lista de mascotas
+        "200":
+          description: Sesion iniciada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Session"
+        "400":
+          description: El usuario no pudo atenticarse
+          content:
+            application/json:
+              schema:
+                type:
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Incorrect password
+        "404":
+          description: El usuario no existe
+          content:
+            application/json:
+              schema:
+                type:
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: User doesnt exist
+  
+  /api/sessions/current:
+    get:
+      summary: Sesion actual
+      tags:
+        - Sessions
+      responses:
+        "200":
+          description: Muestra la sesion actual
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Session"
+
+  /api/sessions/unprotectedLogin:
+    get:
+      summary: Inicio sin proteccion
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Session"
+      responses:
+        "200":
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    message: Unprotected Logged in
+        "400":
+          description: El usuario no pudo atenticarse
+          content:
+            application/json:
+              schema:
+                type:
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Incorrect password
+        "404":
+          description: El usuario no existe
+          content:
+            application/json:
+              schema:
+                type:
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: User doesnt exist
+                      
+  /api/sessions/unprotectedCurrent:
+    get:
+      summary: Actual desprotegido
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Session"
+      responses:
+        "200":
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Session"
+
+components:
+  schemas:
+    Session:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 64e2d3f8a5d6f20017b8d9d5
+        first_name:
+          type: string
+          example: Juan
+        last_name:
+          type: string
+          example: Lopez
+        email:
+          type: email
+          example: juanlopez@example.com
+        password:
+          type: password
+          example: coder123
+    SessionInput:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: Juan
+        last_name:
+          type: string
+          example: Lopez
+        email:
+          type: email
+          example: juanlopez@example.com
+        password:
+          type: password
+          example: coder123 
