@@ -20,11 +20,13 @@ import { swaggerSpecs, swaggerUiMiddleware } from "./config/swagger.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8080;
-const connection = mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => logger.info("Conectado con Mongo Atlas"))
-  .catch((err) => logger.error("Error de coneccion con MongoDB", err));
+
+// const PORT = process.env.PORT || 8080;
+
+// const connection = mongoose
+//   .connect(process.env.MONGO_URI)
+//   .then(() => logger.info("Conectado con Mongo Atlas"))
+//   .catch((err) => logger.error("Error de coneccion con MongoDB", err));
 
 app.use(express.json());
 app.use(cookieParser());
@@ -51,4 +53,5 @@ app.get("/", (req, res) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => logger.info(`Listening on ${PORT}`));
+// app.listen(PORT, () => logger.info(`Listening on ${PORT}`));
+export default app;
