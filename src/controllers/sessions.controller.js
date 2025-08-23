@@ -46,6 +46,11 @@ const login = async (req, res) => {
     return res
       .status(400)
       .send({ status: "error", error: "Incorrect password" });
+
+  await usersService.updateUser(user._id, {
+    last_connection: new Date(),
+  });
+
   const userDto = UserDTO.getUserTokenFrom(user);
   const token = jwt.sign(userDto, "tokenSecretJWT", { expiresIn: "1h" });
   res
