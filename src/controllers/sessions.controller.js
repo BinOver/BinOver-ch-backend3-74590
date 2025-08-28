@@ -47,7 +47,7 @@ const login = async (req, res) => {
       .status(400)
       .send({ status: "error", error: "Incorrect password" });
 
-  await usersService.updateUser(user._id, {
+  await usersService.update(user, {
     last_connection: new Date(),
   });
 
