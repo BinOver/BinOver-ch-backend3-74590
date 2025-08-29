@@ -32,12 +32,6 @@ paths:
           schema:
             type: string
           description: ID de la adopcion
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Adoption"
       responses:
         "200":
           description: Lista una adopcion en particular por id
@@ -72,12 +66,6 @@ paths:
           schema:
             type: string
           description: ID de Mascota
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AdoptionInput"
       responses:
         "200":
           description: Crea una nueva adopcion

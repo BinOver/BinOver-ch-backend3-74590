@@ -48,7 +48,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SessionInput"
+              $ref: "#/components/schemas/SessionInputLogin"
       responses:
         "200":
           description: Sesion iniciada correctamente
@@ -220,6 +220,15 @@ components:
         last_name:
           type: string
           example: Lopez
+        email:
+          type: email
+          example: juanlopez@example.com
+        password:
+          type: password
+          example: coder123
+    SessionInputLogin:
+      type: object
+      properties:
         email:
           type: email
           example: juanlopez@example.com
