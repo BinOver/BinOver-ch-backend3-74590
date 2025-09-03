@@ -30,6 +30,11 @@ const updatePet = async (req, res) => {
   try {
     const petUpdateBody = req.body;
     const petId = req.params.pid;
+    //validacion de existencia de mascota
+    const isPet = await petsService.getBy({ _id: petId });
+    if (!isPet)
+      return res.status(404).send({ status: "error", error: "Pet not found" });
+    //
     const result = await petsService.update(petId, petUpdateBody);
     res.send({ status: "success", message: "pet updated" });
   } catch (error) {
@@ -40,6 +45,11 @@ const updatePet = async (req, res) => {
 const deletePet = async (req, res) => {
   try {
     const petId = req.params.pid;
+    //validacion de existencia de mascota
+    const isPet = await petsService.getBy({ _id: petId });
+    if (!isPet)
+      return res.status(404).send({ status: "error", error: "Pet not found" });
+    //
     const result = await petsService.delete(petId);
     res.send({ status: "success", message: "pet deleted" });
   } catch (error) {
