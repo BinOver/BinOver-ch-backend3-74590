@@ -4,6 +4,10 @@ import chai from "chai";
 import chaiHttp from "chai-http";
 import mongoose from "mongoose";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const { expect } = chai;
 chai.use(chaiHttp);
@@ -62,9 +66,10 @@ describe("Pets API", function () {
 
   it("/api/pets/withimage: crear una mascota con imagen", async function () {
     const imagePath = path.join(
-      process.cwd(),
-      "src/public/img/1671549990926-coderDog.jpg"
+      __dirname,
+      "../public/img/1671549990926-coderDog.jpg"
     );
+    console.log(imagePath);
     const newPetWithImage = {
       name: "Test",
       species: "test",
