@@ -31,64 +31,80 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password)
-    return res
-      .status(400)
-      .send({ status: "error", error: "Incomplete values" });
-  const user = await usersService.getUserByEmail(email);
-  if (!user)
-    return res
-      .status(404)
-      .send({ status: "error", error: "User doesn't exist" });
-  const isValidPassword = await passwordValidation(user, password);
-  if (!isValidPassword)
-    return res
-      .status(400)
-      .send({ status: "error", error: "Incorrect password" });
+  try {
+    const { email, password } = req.body;
+    if (!email || !password)
+      return res
+        .status(400)
+        .send({ status: "error", error: "Incomplete values" });
+    const user = await usersService.getUserByEmail(email);
+    if (!user)
+      return res
+        .status(404)
+        .send({ status: "error", error: "User doesn't exist" });
+    const isValidPassword = await passwordValidation(user, password);
+    if (!isValidPassword)
+      return res
+        .status(400)
+        .send({ status: "error", error: "Incorrect password" });
 
-  await usersService.update(user, {
-    last_connection: new Date(),
-  });
+    await usersService.update(user, {
+      last_connection: new Date(),
+    });
 
-  const userDto = UserDTO.getUserTokenFrom(user);
-  const token = jwt.sign(userDto, "tokenSecretJWT", { expiresIn: "1h" });
-  res
-    .cookie("coderCookie", token, { maxAge: 3600000 })
-    .send({ status: "success", message: "Logged in" });
+    const userDto = UserDTO.getUserTokenFrom(user);
+    const token = jwt.sign(userDto, "tokenSecretJWT", { expiresIn: "1h" });
+    res
+      .cookie("coderCookie", token, { maxAge: 3600000 })
+      .send({ status: "success", message: "Logged in" });
+  } catch (err) {
+    next(err);
+  }
 };
 
 const current = async (req, res) => {
-  const cookie = req.cookies["coderCookie"];
-  const user = jwt.verify(cookie, "tokenSecretJWT");
-  if (user) return res.send({ status: "success", payload: user });
+  try {
+    const cookie = req.cookies["coderCookie"];
+    const user = jwt.verify(cookie, "tokenSecretJWT");
+    if (user) return res.send({ status: "success", payload: user });
+  } catch (err) {
+    next(err);
+  }
 };
 
 const unprotectedLogin = async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password)
-    return res
-      .status(400)
-      .send({ status: "error", error: "Incomplete values" });
-  const user = await usersService.getUserByEmail(email);
-  if (!user)
-    return res
-      .status(404)
-      .send({ status: "error", error: "User doesn't exist" });
-  const isValidPassword = await passwordValidation(user, password);
-  if (!isValidPassword)
-    return res
-      .status(400)
-      .send({ status: "error", error: "Incorrect password" });
-  const token = jwt.sign(user, "tokenSecretJWT", { expiresIn: "1h" });
-  res
-    .cookie("unprotectedCookie", token, { maxAge: 3600000 })
-    .send({ status: "success", message: "Unprotected Logged in" });
+  try {
+    const { email, password } = req.body;
+    if (!email || !password)
+      return res
+        .status(400)
+        .send({ status: "error", error: "Incomplete values" });
+    const user = await usersService.getUserByEmail(email);
+    if (!user)
+      return res
+        .status(404)
+        .send({ status: "error", error: "User doesn't exist" });
+    const isValidPassword = await passwordValidation(user, password);
+    if (!isValidPassword)
+      return res
+        .status(400)
+        .send({ status: "error", error: "Incorrect password" });
+    const token = jwt.sign(user, "tokenSecretJWT", { expiresIn: "1h" });
+    res
+      .cookie("unprotectedCookie", token, { maxAge: 3600000 })
+      .send({ status: "success", message: "Unprotected Logged in" });
+  } catch (err) {
+    next(err);
+  }
 };
 const unprotectedCurrent = async (req, res) => {
-  const cookie = req.cookies["unprotectedCookie"];
-  const user = jwt.verify(cookie, "tokenSecretJWT");
-  if (user) return res.send({ status: "success", payload: user });
+  try {
+    const cookie = req.cookies["unprotectedCookie"];
+    const user = jwt.verify(cookie, "tokenSecretJWT");
+    if (user) return res.send({ status: "success", payload: user });
+  } catch (err) {
+    next(err);
+  }
 };
 export default {
   current,
