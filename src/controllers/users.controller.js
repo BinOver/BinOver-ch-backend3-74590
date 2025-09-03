@@ -1,7 +1,7 @@
 import { usersService } from "../services/index.js";
 import __dirname from "../utils/index.js";
 
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res, next) => {
   try {
     const users = await usersService.getAll();
     res.send({ status: "success", payload: users });
@@ -10,7 +10,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
   try {
     const userId = req.params.uid;
     const user = await usersService.getUserById(userId);
@@ -22,7 +22,7 @@ const getUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
   try {
     const updateBody = req.body;
     const userId = req.params.uid;
@@ -36,7 +36,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
   try {
     const userId = req.params.uid;
     const result = await usersService.getUserById(userId);
@@ -51,7 +51,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const postUser = async (req, res) => {
+const postUser = async (req, res, next) => {
   try {
     const userId = req.params.uid;
     const user = await usersService.getUserById(userId);

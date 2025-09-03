@@ -3,7 +3,7 @@ import { createHash, passwordValidation } from "../utils/index.js";
 import jwt from "jsonwebtoken";
 import UserDTO from "../dto/User.dto.js";
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   try {
     const { first_name, last_name, email, password } = req.body;
     if (!first_name || !last_name || !email || !password)
@@ -30,7 +30,7 @@ const register = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     if (!email || !password)
@@ -62,7 +62,7 @@ const login = async (req, res) => {
   }
 };
 
-const current = async (req, res) => {
+const current = async (req, res, next) => {
   try {
     const cookie = req.cookies["coderCookie"];
     const user = jwt.verify(cookie, "tokenSecretJWT");
@@ -72,7 +72,7 @@ const current = async (req, res) => {
   }
 };
 
-const unprotectedLogin = async (req, res) => {
+const unprotectedLogin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     if (!email || !password)
@@ -97,7 +97,7 @@ const unprotectedLogin = async (req, res) => {
     next(err);
   }
 };
-const unprotectedCurrent = async (req, res) => {
+const unprotectedCurrent = async (req, res, next) => {
   try {
     const cookie = req.cookies["unprotectedCookie"];
     const user = jwt.verify(cookie, "tokenSecretJWT");

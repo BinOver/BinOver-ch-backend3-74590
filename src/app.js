@@ -17,6 +17,8 @@ import loggerTest from "./routes/loggerTest.js";
 
 import { swaggerSpecs, swaggerUiMiddleware } from "./config/swagger.js";
 
+import compression from "compression";
+
 dotenv.config();
 
 const app = express();
@@ -31,6 +33,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(addLogger);
+app.use(compression());
 
 app.use(
   "/api/docs",
